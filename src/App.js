@@ -1,25 +1,26 @@
-import logo from './logo.svg';
-import './App.css';
+import { Route, Routes } from 'react-router-dom'
+import Home from './Pages/HomePage/Home'
+import AddTrend from './Pages/Trend/AddTrend'
+import LoginPage from './Pages/LoginPage/LoginPage'
+import Payment from './Pages/PaymentPlans/Payment'
+import Details from './Pages/Trend/Details'
+import AddMost2 from './Pages/Trend/AddMost2'
+import AddTop3 from './Pages/Trend/AddTop3'
+import CreateAccount from './Auth/CreateAccount'
 
-function App() {
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <Routes>
+    <Route element={<LoginPage/>} path='/'/>
+    <Route element={<Payment/>} path='/payment'/>
+    <Route element={<Home/>} path='/home'/>
+    <Route element={<AddTrend/>} path='/add/Trend'/>
+    <Route element={<Details/>} path='/detail'/>
+    <Route element={<AddMost2/>} path='/add/Most'/>
+    <Route element={<AddTop3/>} path='/add/Top'/>
+    <Route element={<CreateAccount/>} path='/create/Account' />
+    </Routes>
+  )
 }
 
-export default App;
+export default App

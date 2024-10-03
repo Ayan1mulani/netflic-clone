@@ -1,0 +1,25 @@
+.input_style {
+    padding: 10px;
+    box-sizing: border-box;
+    background-color: grey; /* Background color for the input box */
+    width: 400px;
+    font-size: 16px;
+    color: white; /* Text color */
+}
+
+.input_style:focus {
+    color: white;
+    font-weight: bold;
+}
+
+.input_style::placeholder {
+    color: white; /* Placeholder text color */
+}
+
+.input_space {
+    margin-bottom: 20px; /* Adjust the spacing as needed */
+  }
+
+.btnn{
+    background-color: red;
+}
