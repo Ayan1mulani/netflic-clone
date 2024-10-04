@@ -136,7 +136,10 @@
 }
 
 .movie-item:hover {
-  transform: scale(1.1); /* Scale the entire box to 110% on hover */
+  transform: scale(1.1); 
 }
 
 
+.shows-section{
+  height: 250vh;
+}

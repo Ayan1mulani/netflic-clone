@@ -11,16 +11,26 @@ const AlbumDynamicGridPage = () => {
   const [movie3, setMovie3] = useState([]);
   const [isAdmin, setIsAdmin] = useState(false); // State to track if the user is an admin
 
-  const imageContainerRef = useRef(null);
   const movieContainerRef1 = useRef(null);
   const movieContainerRef2 = useRef(null);
   const movieContainerRef3 = useRef(null);
+  const container = useRef(null);
 
   const navigate = useNavigate();
+
+
+  useEffect(() => {
+    const isLoggedIn = sessionStorage.getItem('token');
+    if (!isLoggedIn) {
+      navigate('/');
+      window.location.reload();
+    }
+  }, [navigate]);
+
   
   useEffect(() => {
     // Get token from localStorage
-    const token = localStorage.getItem('token');
+    const token = sessionStorage.getItem('token');
     if (token) {
       // Decode token and check scopes
       const decodedToken = jwtDecode(token);
@@ -68,6 +78,17 @@ const AlbumDynamicGridPage = () => {
     getData3();
   }, []);
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (container.current) {
+        scrollRight(container); // Change this to the desired movie container
+      }
+    }, 3000); // Adjust time in milliseconds (3000 ms = 3 seconds)
+
+    return () => clearInterval(interval); // Clear the interval on unmount
+  }, []);
+
+
   // Function to scroll images left or right
   const scrollLeft = (containerRef) => {
     if (containerRef.current) {
@@ -103,7 +124,7 @@ const AlbumDynamicGridPage = () => {
     <div className="album-dynamic-grid">
       <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', paddingRight: 60 }}>
         <p style={{ justifyContent: 'start', marginLeft: 60, fontSize: 30, fontWeight: 'normal' }}>{title}</p>
-        {isAdmin && <button className='addButton' onClick={onClickAdd}>++</button>} {/* Show Add button only if user is admin */}
+        {isAdmin && <button className='addButton' onClick={onClickAdd}>Add</button>}
       </div>
       <div className="scroll-buttons">
         <button onClick={() => scrollLeft(containerRef)} className="scroll-btn left-btn">&lt;</button>
@@ -126,7 +147,7 @@ const AlbumDynamicGridPage = () => {
 
   return (
     <div>
-      <div className="top-image-scroll-container" ref={imageContainerRef}>
+      <div className="top-image-scroll-container" ref={container}>
         <div className="image-wrapper">
           <img src="https://occ-0-2087-2186.1.nflxso.net/dnm/api/v6/E8vDc_W8CLv7-yMQu8KMEC7Rrr8/AAAABSnpnCU2Bb-QjJmTVcTU6gG57sYTE-q2UOx2GsLEjFX83tNvgxB5yFtpqyJQGAAB21o_O9VYKdOKPfxe7joIcWaMPhrF3YRfNNBP.jpg?r=afe" alt="" />
           <img src="https://occ-0-2087-2186.1.nflxso.net/dnm/api/v6/E8vDc_W8CLv7-yMQu8KMEC7Rrr8/AAAABaYQ96l7chKogWW9hfK9XGBbJWrb7aGlNeZwGt9uDhKRUaNxYA6g9ydeEVJEP4UWYqqZpeh5ja0N9tOWXdtJFy1Bj0wbaE8ginb3.jpg?r=eac&quot;" alt="Red notice" />
@@ -134,10 +155,10 @@ const AlbumDynamicGridPage = () => {
           <img src="https://occ-0-2087-2164.1.nflxso.net/dnm/api/v6/6AYY37jfdO6hpXcMjf9Yu5cnmO0/AAAABcaZlB5cBXaQovKzRNe3DLOD5xe5ug2Msp7y4SHAFXs8Uu-s9esOCD1X3jnbYZZ4Dm-tM-cOgWh1FDmFD0wIfIfbrkpJAoULvXWX.jpg?r=c9b" alt="" />
         </div>
       </div>
-      <div style={{ height: '250vh' }}>
-        <MovieSection title="Action movies" movies={movie} onClickAdd={displayAdd} containerRef={movieContainerRef1} />
-        <MovieSection title="Sci-Fi -  Dramas" movies={movie2} onClickAdd={displayAdd2} containerRef={movieContainerRef2} />
-        <MovieSection title="Kids & Family Movies" movies={movie3} onClickAdd={displayAdd3} containerRef={movieContainerRef3} />
+      <div className='shows-section'>
+        <MovieSection title="Most Watched" movies={movie} onClickAdd={displayAdd} containerRef={movieContainerRef1} />
+        <MovieSection title="Sci-Fi   Dramas" movies={movie2} onClickAdd={displayAdd2} containerRef={movieContainerRef2} />
+        <MovieSection title="Family Movies" movies={movie3} onClickAdd={displayAdd3} containerRef={movieContainerRef3} />
         <BottomHome />
       </div>
     </div>

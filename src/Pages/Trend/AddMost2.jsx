@@ -7,7 +7,7 @@ const AddTrend = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const isLoggedIn = localStorage.getItem('token');
+    const isLoggedIn = sessionStorage.getItem('token');
     if (!isLoggedIn) {
       navigate('/');
       window.location.reload();

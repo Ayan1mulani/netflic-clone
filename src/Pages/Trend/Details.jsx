@@ -49,7 +49,7 @@ const DetailPage = () => {
   <span className='grey-text'>Starring:</span> {movie.starring}
          </p>  <br />
          <a href={movie.videourl} target="_blank" rel="noopener noreferrer">
-  <button>  Play</button>
+  <button style={{height: '40px' , width: '70px'}}>  Play</button>
 </a>
       </div>
     </div>

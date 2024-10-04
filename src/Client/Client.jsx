@@ -27,7 +27,7 @@ const fetchPostData = (uri, payload) => {
 };
 
 const fetchPostDataWithAuth = (uri, payload) => {
-  const token = localStorage.getItem('token');
+  const token = sessionStorage.getItem('token');
   const url = `${BASE_URL}${uri}`;
   return axios.post(url, payload, {
     headers: {
@@ -47,8 +47,12 @@ const fetchPostDataWithAuth = (uri, payload) => {
 };
 
 
+
+
+
+
 const fetchGetDataWithAuth = async (uri) => {
-  const token = localStorage.getItem('token'); // Ensure you have the token stored correctly
+  const token = sessionStorage.getItem('token'); // Ensure you have the token stored correctly
   const url = `${BASE_URL}${uri}`;
   try {
     const response = await axios.get(url, {

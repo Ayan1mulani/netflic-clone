@@ -4,21 +4,16 @@ import { useNavigate } from 'react-router-dom';
 const Payment = () => {
   const Navigate = useNavigate();
   useEffect(()=>{
-    const isLoggedIn = localStorage.getItem('token');
+    const isLoggedIn = sessionStorage.getItem('token');
     if(!isLoggedIn){
       Navigate('/');
     }
   })
 
-
-function signout(){
-    localStorage.removeItem('token');
-    Navigate('/');
-}
   return (
     <div>
-      <div>
-        <button onClick={signout}>sing out</button>
+      <div style={{justifyContent:'center', alignItems:'center'}}>
+        <h2>Payment Page  Under Maintainance</h2>
       </div>
     </div>
   )

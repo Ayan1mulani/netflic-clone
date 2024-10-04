@@ -13,7 +13,7 @@ const Login = () => {
   const Navigate = useNavigate();
 
   useEffect(()=>{
-    const isLogginIn = localStorage.getItem('token');
+    const isLogginIn = sessionStorage.getItem('token');
     if(isLogginIn){
       Navigate('/home');
     }
@@ -48,7 +48,7 @@ const Login = () => {
     .then((Response)=> {
     const {token} = Response.data;
     setLoginError('');
-    localStorage.setItem('token',token);
+    sessionStorage.setItem('token',token);
      Navigate('/home');
 
       
@@ -89,6 +89,10 @@ const Login = () => {
      </div>
        <button  onClick={handleLogin} type="button" class="btn btn-danger btn_style btnn " >Get Started</button>  
        {loginError && <p style={{ color: 'red' }}>{loginError}</p>}
+       </div>
+       <div style={{ display: 'inline-block'}}>
+       <p style={{color:'grey'}}>email: user@user.com</p> 
+       <p style={{color:'grey'}}>password : pass@123</p>
        </div>
     </div>
         </div>

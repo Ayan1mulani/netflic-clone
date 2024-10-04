@@ -9,7 +9,7 @@ const Header = () => {
     // Show a confirmation dialog
     const confirmed = window.confirm('Are you sure you want to log out?');
     if (confirmed) {
-      localStorage.removeItem('token'); // Clear the token
+      sessionStorage.removeItem('token'); // Clear the token
       navigate('/'); // Navigate to the home or login page
     }
   };
