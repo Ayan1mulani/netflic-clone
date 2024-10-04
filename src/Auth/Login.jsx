@@ -8,8 +8,9 @@ const Login = () => {
   const [password, setPassword] = useState('pass@123');
   const [errors, setErrors] = useState({ email: '', password: '' });
   const [loginError, setLoginError] = useState('');
-  const navigate = useNavigate(); // 'navigate' should be lowercase
-  
+  const [loading, setLoading] = useState(false); // State to track loading
+  const navigate = useNavigate(); 
+
   useEffect(() => {
     const pingBackend = async () => {
       try {
@@ -32,7 +33,7 @@ const Login = () => {
     if (token) {
       navigate('/home');
     }
-  }, [navigate]); // Adding navigate as a dependency to avoid stale closures
+  }, [navigate]);
 
   const validateEmail = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -45,6 +46,7 @@ const Login = () => {
 
   const handleLogin = async () => {
     setErrors({ email: '', password: '' });
+    setLoginError('');
 
     if (!validateEmail()) {
       setErrors((prevErrors) => ({ ...prevErrors, email: 'Invalid email format' }));
@@ -56,15 +58,18 @@ const Login = () => {
       return;
     }
 
+    setLoading(true); // Start loading
+
     try {
       const response = await fetchPostData('/auth/token', { email, password });
       const { token } = response.data;
-      setLoginError('');
       sessionStorage.setItem('token', token);
-      navigate('/home');
+      setLoginError('');
+      navigate('/home'); // Redirect to home after login
     } catch (error) {
       console.log('Login error:', error);
       setLoginError('An error occurred during login');
+      setLoading(false); // Stop loading on error
     }
   };
 
@@ -94,7 +99,7 @@ const Login = () => {
             {errors.password && <span style={{ color: 'red' }}>{errors.password}</span>}
             <br />
             <button onClick={handleLogin} type="button" className="btn btn-danger btn_style btnn">
-              Get Started
+              {loading ? 'Loading...' : 'Get Started'} {/* Change button text while loading */}
             </button>
             {loginError && <p style={{ color: 'red' }}>{loginError}</p>}
           </div>
@@ -104,6 +109,11 @@ const Login = () => {
           </div>
         </div>
       </div>
+      {loading && (
+        <div className="loading-spinner">
+          <p style={{ color: 'white' }}>Loading...</p>
+        </div>
+      )}
     </div>
   );
 };
