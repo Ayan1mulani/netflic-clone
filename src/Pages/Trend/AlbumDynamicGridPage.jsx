@@ -5,43 +5,18 @@ import { jwtDecode } from 'jwt-decode';
 import BottomHome from '../BottomPage/BottomHome';
 import './trend.css'; // Make sure your CSS is in the right location
 
+
 const AlbumDynamicGridPage = () => {
+  const navigate = useNavigate();
+  const [isAdmin, setIsAdmin] = useState(false);
   const [movie, setMovie] = useState([]);
   const [movie2, setMovie2] = useState([]);
   const [movie3, setMovie3] = useState([]);
-  const [isAdmin, setIsAdmin] = useState(false); // State to track if the user is an admin
-
+  const container = useRef(null);
   const movieContainerRef1 = useRef(null);
   const movieContainerRef2 = useRef(null);
   const movieContainerRef3 = useRef(null);
-  const container = useRef(null);
 
-  const navigate = useNavigate();
-
-
-  useEffect(() => {
-    const isLoggedIn = sessionStorage.getItem('token');
-    if (!isLoggedIn) {
-      navigate('/');
-      window.location.reload();
-    }
-  }, [navigate]);
-
-  
-  useEffect(() => {
-    // Get token from localStorage
-    const token = sessionStorage.getItem('token');
-    if (token) {
-      // Decode token and check scopes
-      const decodedToken = jwtDecode(token);
-      if (decodedToken && decodedToken.scope) {
-        // Check if the user has the 'ADMIN' scope
-        const scopes = decodedToken.scope.split(' '); // Split the scope string into an array
-        const isAdminRole = scopes.includes('ADMIN'); // Check if 'ADMIN' is in the array
-        setIsAdmin(isAdminRole);
-      }
-    }
-  }, []);
   useEffect(() => {
     const getData = async () => {
       try {
@@ -52,6 +27,18 @@ const AlbumDynamicGridPage = () => {
       }
     };
     getData();
+  }, []);
+
+  useEffect(() => {
+    const token = sessionStorage.getItem('token');
+    if (token) {
+      const decodedToken = jwtDecode(token);
+      if (decodedToken && decodedToken.scope) {
+        const scopes = decodedToken.scope.split(' ');
+        const isAdminRole = scopes.includes('ADMIN');
+        setIsAdmin(isAdminRole);
+      }
+    }
   }, []);
 
   useEffect(() => {
@@ -81,15 +68,13 @@ const AlbumDynamicGridPage = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       if (container.current) {
-        scrollRight(container); // Change this to the desired movie container
+        scrollRight(container);
       }
-    }, 3000); // Adjust time in milliseconds (3000 ms = 3 seconds)
+    }, 3000);
 
-    return () => clearInterval(interval); // Clear the interval on unmount
+    return () => clearInterval(interval);
   }, []);
 
-
-  // Function to scroll images left or right
   const scrollLeft = (containerRef) => {
     if (containerRef.current) {
       containerRef.current.scrollBy({ left: -window.innerWidth, behavior: 'smooth' });
@@ -104,7 +89,7 @@ const AlbumDynamicGridPage = () => {
 
   const handleImageClick = (data) => {
     console.log("Movie clicked:", data);
-    navigate('/detail', { state: { movie: data } });
+    navigate('/detail', { state: { movie: data, previousPage: 'album' } });
   };
 
   const displayAdd = () => {
@@ -119,8 +104,7 @@ const AlbumDynamicGridPage = () => {
     navigate('/add/Top');
   };
 
-  // Component for each movie section
-  const MovieSection = ({ title, movies, containerRef, onClickAdd }) => (
+  const MovieSection = React.memo(({ title, movies, containerRef, onClickAdd }) => (
     <div className="album-dynamic-grid">
       <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', paddingRight: 60 }}>
         <p style={{ justifyContent: 'start', marginLeft: 60, fontSize: 30, fontWeight: 'normal' }}>{title}</p>
@@ -136,6 +120,7 @@ const AlbumDynamicGridPage = () => {
                 alt={data.name}
                 onClick={() => handleImageClick(data)}
                 style={{ cursor: 'pointer' }}
+                loading="lazy"
               />
             </div>
           ))}
@@ -143,7 +128,7 @@ const AlbumDynamicGridPage = () => {
         <button onClick={() => scrollRight(containerRef)} className="scroll-btn right-btn">&gt;</button>
       </div>
     </div>
-  );
+  ));
 
   return (
     <div>
@@ -157,7 +142,7 @@ const AlbumDynamicGridPage = () => {
       </div>
       <div className='shows-section'>
         <MovieSection title="Most Watched" movies={movie} onClickAdd={displayAdd} containerRef={movieContainerRef1} />
-        <MovieSection title="Sci-Fi   Dramas" movies={movie2} onClickAdd={displayAdd2} containerRef={movieContainerRef2} />
+        <MovieSection title="Sci-Fi Dramas" movies={movie2} onClickAdd={displayAdd2} containerRef={movieContainerRef2} />
         <MovieSection title="Family Movies" movies={movie3} onClickAdd={displayAdd3} containerRef={movieContainerRef3} />
         <BottomHome />
       </div>
