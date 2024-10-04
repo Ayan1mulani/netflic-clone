@@ -6,7 +6,6 @@ import Payment from './Pages/PaymentPlans/Payment'
 import Details from './Pages/Trend/Details'
 import AddMost2 from './Pages/Trend/AddMost2'
 import AddTop3 from './Pages/Trend/AddTop3'
-import CreateAccount from './Auth/CreateAccount'
 
 const App = () => {
   return (
@@ -18,7 +17,6 @@ const App = () => {
     <Route element={<Details/>} path='/detail'/>
     <Route element={<AddMost2/>} path='/add/Most'/>
     <Route element={<AddTop3/>} path='/add/Top'/>
-    <Route element={<CreateAccount/>} path='/create/Account' />
     </Routes>
   )
 }

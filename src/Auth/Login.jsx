@@ -62,9 +62,9 @@ const Login = () => {
   }
   return (
     <div style={{justifyContent:'center', display:'flex'}}>
-    <div style={{backgroundColor:'rgba(0,0,0,0.7)', height:'500px', width:'600px',padding:'50px'}}>
+    <div style={{backgroundColor:'rgba(0,0,0,0.7)', height:'500px',padding:'50px',overflow:'hidden',paddingRight:'40px'}}>
       <div style={{alignItems:'center',justifyContent:'center',height:100}}>
-        <div style={{ display:'flex', color:'white', paddingLeft:'45px', fontWeight:'bold' }}>
+        <div style={{ display:'flex', color:'white', fontWeight:'bold' }}>
         <h3 >Sign in</h3>
         </div>
  <div style={{padding:'30px'}} >
