@@ -88,7 +88,17 @@ const AlbumDynamicGridPage = () => {
         {isAdmin && <button className='addButton' onClick={onClickAdd}>Add</button>}
     
     
-        <carousel>
+        <Carousel
+        className={styles.carousel}
+        autoPlay={false}           // Automatically play the slides
+        showStatus={false}        // Hide the status indicator
+        dynamicHeight={true}     // Fix the height of the carousel
+        axis='horizontal'         // Set the carousel to slide horizontally
+        infiniteLoop={false}       // Loop the slides infinitely
+        stopOnHover={false}       // Continue auto-playing even on hover
+        showThumbs={false}        
+        >
+          <div>
           {movies && movies.map((data, index) => (
             <div key={index} className="movie-item">
               <img
@@ -99,8 +109,10 @@ const AlbumDynamicGridPage = () => {
                 loading="lazy"
               />
             </div>
+            
           ))}
-          </carousel>
+          </div>
+          </Carousel>
      
      </div>
   
