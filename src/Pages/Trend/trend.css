@@ -1,12 +1,8 @@
-
-
 .album-dynamic-grid {
   display: flex;
   flex-direction: column;
-  align-items: start;
-  margin-left: 30px;
-  margin-right: 30px;
-  margin-top: 50px;
+  align-items: flex-start;
+  margin: 50px 30px;
 }
 
 .scroll-buttons {
@@ -14,26 +10,43 @@
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  max-width: 10000px; /* Ensures wide content can scroll */
 }
 
 .movie-container {
   display: flex;
-  flex-wrap: nowrap;
   overflow-x: auto;
   white-space: nowrap;
-  margin: 0 10px;
+  scroll-behavior: smooth;
+  -ms-overflow-style: none; /* Internet Explorer and Edge */
+  scrollbar-width: none; /* Firefox */
+  align-items: center; /* Ensure images stay vertically centered */
+}
+
+.movie-container::-webkit-scrollbar {
+  display: none; /* Safari and Chrome */
 }
 
 .movie-item {
-  flex: 0 0 auto;
+  max-height: 100%;
   margin-right: 20px;
-  text-align: center; /* Center-align text */
+  text-align: center;
+  padding: 10px;
+  transition: transform 0.3s ease;
+  display: flex; /* Ensures the item remains vertically centered */
+  align-items: center; /* Centers the image vertically */
 }
 
 .movie-item img {
   width: 400px;
-  height: auto; /* Maintain aspect ratio */
+  height: auto;
+  object-fit: contain;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  display: block; /* Ensures the image behaves as a block element */
+}
+
+.movie-item:hover {
+  transform: scale(1.1);
 }
 
 .scroll-btn {
@@ -43,15 +56,6 @@
   padding: 10px;
   cursor: pointer;
   font-size: 20px;
-  margin: 0 10px;
-}
-
-.left-btn {
-  margin-right: 10px;
-}
-
-.right-btn {
-  margin-left: 10px;
 }
 
 .addButton {
@@ -60,66 +64,12 @@
   border-radius: 5px;
 }
 
-.p-style {
-  font-weight: lighter;
-}
-
-.p-style2 {
-  font-weight: normal;
-  font-size: 15px;
-  gap: 5px;
-  max-width: 500px;
-}
-
-
-
-.top-image-scroll-container {
-  width: 100%;
-  overflow-x: auto;
-  white-space: nowrap;
-}
-
-.image-wrapper {
-  display: inline-flex; /* Ensures images are in a row */
-}
-
-.image-wrapper img {
-  width: 100vw;
-  height: 70vh;
-  margin-right: 20px;
-  object-fit: cover;
-}
-
-.album-dynamic-grid {
-  margin-top: 20px;
-  padding: 20px;
-}
-
-
-
-.grey-text {
-  color: grey;
-}
-
-
-.movie-item {
-  transition: transform 0.3s ease; /* Smooth transition */
-  overflow: hidden; /* Prevent overflow */
-  display: inline-block; /* Treat each item as a block for proper scaling */
-  padding: 10px; /* Add some padding for spacing */
-}
-
-.movie-item:hover {
-  transform: scale(1.1); 
-}
-
-
-.shows-section{
-  height: 250vh;
+.shows-section {
+  padding: 50px 0;
 }
 
 .carousel .slide img {
-  max-height:  70vh; /* or your desired height */
-  width: auto; /* keep the aspect ratio */
-  object-fit: cover; /* ensures the image covers the area without stretching */
+  max-height: 68vh;
+  width: auto;
+  object-fit: cover;
 }

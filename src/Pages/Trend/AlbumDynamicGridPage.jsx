@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { fetchGetDataWithAuth } from '../../Client/Client';
 import { useNavigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
@@ -14,7 +14,9 @@ const AlbumDynamicGridPage = () => {
   const [movie, setMovie] = useState([]);
   const [movie2, setMovie2] = useState([]);
   const [movie3, setMovie3] = useState([]);
-
+  const movieContainerRef1 = useRef(null);
+  const movieContainerRef2 = useRef(null);
+  const movieContainerRef3 = useRef(null);
 
   useEffect(() => {
     const getData = async () => {
@@ -64,7 +66,17 @@ const AlbumDynamicGridPage = () => {
     getData3();
   }, []);
 
+  const scrollLeft = (containerRef) => {
+    if (containerRef.current) {
+      containerRef.current.scrollBy({ left: -window.innerWidth, behavior: 'smooth' });
+    }
+  };
 
+  const scrollRight = (containerRef) => {
+    if (containerRef.current) {
+      containerRef.current.scrollBy({ left: window.innerWidth, behavior: 'smooth' });
+    }
+  };
 
   const handleImageClick = (data) => {
     console.log("Movie clicked:", data);
@@ -83,12 +95,19 @@ const AlbumDynamicGridPage = () => {
     navigate('/add/Top');
   };
 
-  const MovieSection = React.memo(({ title, movies, onClickAdd }) => (
-    <div>
+  const MovieSection = React.memo(({ title, movies, containerRef, onClickAdd }) => (
+    <div className="album-dynamic-grid">
+      <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', paddingRight: 60 }}>
+        <p style={{ justifyContent: 'start', marginLeft: 60, fontSize: 30, fontWeight: 'normal' }}>{title}</p>
+        {isAdmin && <button className='addButton' onClick={onClickAdd}>Add</button>}
+      </div>
+      <div className="scroll-buttons">
+        <button onClick={() => scrollLeft(containerRef)} className="scroll-btn left-btn">&lt;</button>
+        <div className="movie-container" ref={containerRef}>
           {movies && movies.map((data, index) => (
             <div key={index} className="movie-item">
               <img
-                src={ data.photourl1}
+                 src={data.photourl1}
                 alt={data.name}
                 onClick={() => handleImageClick(data)}
                 style={{ cursor: 'pointer' }}
@@ -96,6 +115,9 @@ const AlbumDynamicGridPage = () => {
               />
             </div>
           ))}
+        </div>
+        <button onClick={() => scrollRight(containerRef)} className="scroll-btn right-btn">&gt;</button>
+      </div>
     </div>
   ));
 
@@ -111,7 +133,8 @@ className={styles.carousel}
   interval={3000}           // Interval between slides (in milliseconds)
   stopOnHover={false}       // Continue auto-playing even on hover
   showThumbs={false}        // Hide thumbnail previews
-  showArrows={true}         // Show navigation arrows
+  showArrows={true}         // Show navigation arrowss
+  swipeable={true}
 >
           <div>
           <img src="https://occ-0-2087-2186.1.nflxso.net/dnm/api/v6/E8vDc_W8CLv7-yMQu8KMEC7Rrr8/AAAABSnpnCU2Bb-QjJmTVcTU6gG57sYTE-q2UOx2GsLEjFX83tNvgxB5yFtpqyJQGAAB21o_O9VYKdOKPfxe7joIcWaMPhrF3YRfNNBP.jpg?r=afe" alt="" />
@@ -128,16 +151,11 @@ className={styles.carousel}
         </Carousel>
 
     
-      <div>
-      <Carousel>
-        <MovieSection title="Most Watched" movies={movie} onClickAdd={displayAdd}  />
-        </Carousel>
-        <Carousel>
-        <MovieSection title="Sci-Fi Dramas" movies={movie2} onClickAdd={displayAdd2} />
-        </Carousel>
-        <Carousel>
-        <MovieSection title="Family Movies" movies={movie3} onClickAdd={displayAdd3}  />
-        </Carousel>
+      <div className='shows-section'>
+        
+        <MovieSection title="Most Watched" movies={movie} onClickAdd={displayAdd} containerRef={movieContainerRef1} />
+        <MovieSection title="Sci-Fi Dramas" movies={movie2} onClickAdd={displayAdd2} containerRef={movieContainerRef2} />
+        <MovieSection title="Family Movies" movies={movie3} onClickAdd={displayAdd3} containerRef={movieContainerRef3} />
         <BottomHome />
       </div>
     </div>
